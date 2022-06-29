@@ -1,18 +1,19 @@
-'use strict';
-const mongoose = require('mongoose');
-const { databaseUrl } = require('../../env');
-const log4js = require('../../logger');
-const logger = log4js.getLogger('dataBase');
+"use strict";
+const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
 
-exports.connect = () => {
-        mongoose.connect(databaseUrl, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        })
-        .then(() => {
-            logger.info("Successfully connected to database");
-        })
-        .catch((e) => {
-            logger.error(`No fue posible conectar con la base de datos. Error ${e}`)
-        })
+const { databaseUrl } = require("../../env");
+const log4js = require("../../logger");
+const logger = log4js.getLogger("dataBase");
+
+try {
+  mongoose.connect(databaseUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  logger.info("Base de Datos conectada!!");
+} catch (e) {
+  logger.error(`Error: ${e}`);
 }
+
+module.exports = mongoose.connection;
